@@ -1,7 +1,5 @@
-## Introduction
-V8 is bascially consists of the memory management of the heap and the execution stack (very simplified but helps
-make my point). Things like the callback queue, the event loop and other things like the WebAPIs (DOM, ajax, 
-setTimeout etc) are found inside Chrome or in the case of Node the APIs are Node.js APIs:
+## 介绍
+v8 基本由负责内存管理的堆空间和执行栈构成（它精简但能解决问题）。而回调队列，事件循环以及其他一些 api （DOM，ajax，setTimeout 等等）则可以在 Chrome（WebAPI） 或者 Node.js（NodeAPI） 里找到：
 ```
     +------------------------------------------------------------------------------------------+
     | Google Chrome                                                                            |
@@ -28,15 +26,8 @@ setTimeout etc) are found inside Chrome or in the case of Node the APIs are Node
     |                                                                                          |
     +------------------------------------------------------------------------------------------+
 ```
-The execution stack is a stack of frame pointers. For each function called that function will be pushed onto 
-the stack. When that function returns it will be removed. If that function calls other functions
-they will be pushed onto the stack. When they have all returned execution can proceed from the returned to 
-point. If one of the functions performs an operation that takes time progress will not be made until it 
-completes as the only way to complete is that the function returns and is popped off the stack. This is 
-what happens when you have a single threaded programming language.
+执行栈是一个由指针组成的栈结构。当函数被调用时，这个函数将会被 push 进栈。直到它 return 时才会出栈。如果这个函数里调用了其他函数，这些函数也会被 push 进栈里。当这些子函数都 return 了，调用它们的函数才能 return 出栈。如果其中一个函数需要更多时间来执行，进程会被阻塞，进程只能等到这个函数 return 并弹出栈，才能继续运行下去。这就是当你使用一个单线程编程语言时，会发生什么。
 
-So that describes synchronous functions, what about asynchronous functions?  
-Lets take for example that you call setTimeout, the setTimeout function will be
-pushed onto the call stack and executed. This is where the callback queue comes into play and the event loop. The setTimeout function can add functions to the callback queue. This queue will be processed by the event loop when the call stack is empty.
+以上描述了同步函数， 那么异步函数呢？我们以 setTimeout 为例聊聊，setTimeout 函数将会被 push 进调用栈并执行。这时候就轮到回调队列和事件循环发挥它们的作用了。setTimeout 函数能往回调队列中添加函数。这个队列将会在调用栈空闲的时候在事件循环的帮助下运行。
 
-TODO: Add mirco task queue
+TODO: 补充微任务队列
