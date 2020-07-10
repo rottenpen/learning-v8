@@ -56,15 +56,11 @@ class V8_EXPORT Data {
   Data();                                                                       
 };
 ```
-Template does not have any members/fields, it only declared functions.
+模板没有任何成员/字段, 它只声明了函数.
 
-We create an instance of ObjectTemplate and we can add properties to it that
-all instance created using this ObjectTemplate instance will have. This is done
-by calling Set which is member of the Template class. You specify a Local<Name>
-for the property. Name is a superclass for Symbols and Strings which can be both
-be used as names for a property.
+我们创建一个 ObjectTemplate 的实例，我们可以往它里面添加属性
 
-The implementation for `Set` can be found in `src/api/api.cc`:
+`Set` 的 Implementation 可以在 `src/api/api.cc` 里找到:
 ```c++
 void Template::Set<v8::Local<Name> name, v8::Local<Data> value, v8::PropertyAttribute attribute) {
   ...
@@ -82,7 +78,7 @@ FunctionTemplate 是一个用来创造函数的 template .
 
 这是一个来自[functionttemplate_test.cc](./test/functiontemplate_test.cc)的例子。
 
-An instance of a function template can be created using:
+:
 ```c++
   Local<FunctionTemplate> ft = FunctionTemplate::New(isolate_, function_callback, data);
   Local<Function> function = ft->GetFunction(context).ToLocalChecked();
@@ -8479,8 +8475,7 @@ be in the linked dynamic library which is why these are pointing to different
 areas in memory. The one retreived by the function call will use the
 
 ### Goma
-I've goma referenced in a number of places so just makeing a note of what it is
-here: Goma is googles internal distributed compile service.
+我在很多地方都提到过 goma 了，所以这里就简单说以下 goma 是什么：Goma 是一个 google 内部的分布式编译服务。
 
 ### WebAssembly
 This section is going to take a closer look at how wasm works in V8.
@@ -8712,7 +8707,7 @@ TODO: CompileNativeModule...
 There is an example in [wasm_test.cc](./test/wasm_test.cc).
 
 ### ExtensionCallback
-Is a typedef defined in `include/v8.h`:
+这个类型被定义在 `include/v8.h`:
 ```c++
 typedef bool (*ExtensionCallback)(const FunctionCallbackInfo<Value>&); 
 ```
@@ -8759,11 +8754,10 @@ class FunctionCallbackArguments
                             internal::HeapObject new_target,                    
                             internal::Address* argv, int argc);
 ```
-This class is in the namespace v8::internal so I'm curious why the explicit
-namespace is used here?
+这个类在命名空间 v8::internal 内，所以我很好奇为什么此处使用命名空间？
 
 #### BuiltinArguments
-This class extends `JavaScriptArguments`
+这个类继承了 `JavaScriptArguments`
 ```c++
 class BuiltinArguments : public JavaScriptArguments {
  public:
@@ -8782,8 +8776,7 @@ class BuiltinArguments : public JavaScriptArguments {
 ```c++
 using JavaScriptArguments = Arguments<ArgumentsType::kJS>;
 ```
-`Arguments` can be found in `src/execution/arguments.h`and is templated with 
-the a type of `ArgumentsType` (in `src/common/globals.h`):
+`Arguments` 可以在 `src/execution/arguments.h` 找到并且 templated 自类型 `ArgumentsType` (在 `src/common/globals.h`):
 ```c++
 enum class ArgumentsType {                                                          
   kRuntime,                                                                         
@@ -8804,7 +8797,7 @@ to get them:
 ```
 
 ### NativeContext
-Can be found in `src/objects/contexts.h` and has the following definition:
+在 `src/objects/contexts.h` 里可以找到以下的定义:
 ```c++
 class NativeContext : public Context {
  public:
@@ -8822,7 +8815,7 @@ class NativeContext : public Context {
   int GetErrorsThrown();
 ```
 
-`src/parsing/parser.h` we can find:
+在 `src/parsing/parser.h` 可以找到:
 ```c++
 class V8_EXPORT_PRIVATE Parser : public NON_EXPORTED_BASE(ParserBase<Parser>) { 
   ...
@@ -8832,11 +8825,11 @@ class V8_EXPORT_PRIVATE Parser : public NON_EXPORTED_BASE(ParserBase<Parser>) {
     kAbruptCompletion                                                               
   };
 ```
-But I can't find any usages of this enum? 
+但是我找不到 enum 的用法? 
 
-#### Internal fields/methods
-When you see something like [[Notation]] you can think of this as a field in
+#### 内部字段/方法
+当您看到类似 [[Notation]] you can think of this as a field in
 an object that is not exposed to JavaScript user code but internal to the JavaScript
-engine. These can also be used for internal methods.
+engine。这些也可以用于内部方法。
 
 
