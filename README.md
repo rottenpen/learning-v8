@@ -1,8 +1,7 @@
-## Learning Google V8
-The sole purpose of this project is to aid me in leaning Google's V8 JavaScript engine.
+## 学习 Google V8
+这个项目唯一的目的是帮助我学习 Google 的 V8 Javascript 引擎。
 
-
-### Contents
+### 内容
 1. [Introduction](./notes/intro.md)
 1. [Address](#address)
 1. [TaggedImpl](#taggedimpl)
@@ -39,12 +38,12 @@ must be specified for each one.  This is to avoid them interfering with each
 other, for example by changing the builtin objects provided.
 
 ### ObjectTemplate
-These allow you to create JavaScript objects without a dedicated constructor.
-This would be something like:
+它是为了允许你在一个没有专门构造函数的情况下创建 JavaScript 对象。
+就好像:
 ```js
 const obj = {};
 ```
-This class is declared in include/v8.h and extends Template:
+这个类 include/v8.h 里声明并且继承了 Template 类:
 ```c++
 class V8_EXPORT ObjectTemplate : public Template { 
   ...
@@ -76,12 +75,12 @@ void Template::Set<v8::Local<Name> name, v8::Local<Data> value, v8::PropertyAttr
 }
 ```
 
-There is an example in [objecttemplate_test.cc](./test/objecttemplate_test.cc)
+这是一个在 [objecttemplate_test.cc](./test/objecttemplate_test.cc) 里的例子。
 
 ### FunctionTemplate
-Is a template that is used to create functions.
+FunctionTemplate 是一个用来创造函数的 template .
 
-There is an example in [functionttemplate_test.cc](./test/functiontemplate_test.cc)
+这是一个来自[functionttemplate_test.cc](./test/functiontemplate_test.cc)的例子。
 
 An instance of a function template can be created using:
 ```c++
