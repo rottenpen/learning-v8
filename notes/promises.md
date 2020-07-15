@@ -1,7 +1,7 @@
 ### Promises
 A Promise is an object which has a state. For example, we can create a promise
 using the following call:
-
+Promise 是一个有状态的对象。例如我们可以创造一个 promise
 ```c++
   i::Handle<i::JSPromise> promise = factory->NewJSPromise();
   print_handle(promise);
@@ -18,9 +18,9 @@ This will output:
  - handled_hint: 0
  - properties: 0x3e46080406e9 <FixedArray[0]> {}
 ```
-The implementation for `JSPromise` can be found in `src/objects/js-promise.h`.
+这个 implementation `JSPromise` 可以在 `src/objects/js-promise.h` 找到。
 
-Now, `factory->NewJSPromise` looks like this:
+现在, `factory->NewJSPromise` 看起来是这样子的:
 ```c++
 Handle<JSPromise> Factory::NewJSPromise() {
   Handle<JSPromise> promise = NewJSPromiseWithoutHook();
@@ -37,8 +37,7 @@ Handle<JSPromise> Factory::NewJSPromiseWithoutHook() {
   return promise;
 }
 ```
-Notice `isolate->promise_function()` what does it return and where is it
-defined:
+请注意 `isolate->promise_function()` 它 return 了什么，它是在哪里定义的:
 ```console
 $ gdb ./test/promise_test
 (gdb) b Factory::NewJSPromise
@@ -46,8 +45,7 @@ $ gdb ./test/promise_test
 (gdb) p isolate()->promise_function()
 $1 = {<v8::internal::HandleBase> = {location_ = 0x20a7c68}, <No data fields>}
 ```
-That did tell me much. But if we look at `src/execution/isolate-inl.h` we can
-find:
+这确实告诉了我很多，但如果看向 `src/execution/isolate-inl.h` 我们可以看到:
 ```c++
 #define NATIVE_CONTEXT_FIELD_ACCESSOR(index, type, name)    \
   Handle<type> Isolate::name() {                            \
@@ -78,7 +76,7 @@ bool Isolate::is_promise_function(JSFunction value) {
   return raw_native_context().is_promise_function(value);
 }
 ```
-And the functions that are called from the above (in src/objects/contexts.h):
+这些函数在这文件下被调用 (src/objects/contexts.h):
 ```c++
 inline void set_promise_function(JSFunction value);
 inline bool is_promise_function(JSFunction value) const;
@@ -97,7 +95,7 @@ JSFunction Context::promise_function() const {
   return JSFunction::cast(get(PROMISE_FUNCTION_INDEX));
 }
 ```
-So that answers where the function is declared and defined and what it returns.
+这样就可以回答我们函数在哪里被声明和定义，以及它 return 了什么这些问题了。
 
 
 We can find the torque source file in `src/builtins/promise-constructor.tq` which
@@ -309,5 +307,5 @@ TODO: continue exploration...
 
 [Promise Objects](https://tc39.es/ecma262/#sec-promise-objects).
 
-There is an example in [promise_test.cc](./test/promise_test.cc)
+这里有个例子 [promise_test.cc](./test/promise_test.cc)
 
